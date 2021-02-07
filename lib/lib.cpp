@@ -5,17 +5,27 @@
 #include "lib.h"
 
 #include<iostream>
+#include<string>
 
-namespace lib {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void print(const std::string &input)
+
+__LEFT__ int __RIGHT__ print(const char *input)
 {
   std::cout << input << std::endl;
+  return 0;
 }
 
-std::string polaczoneNapisy(const std::string &napisLewy, const std::string &napisPrawy, const std::string &lacznik)
+__LEFT__ int __RIGHT__ polaczoneNapisy(char *out, const char *napisLewy, const char *napisPrawy, const char *lacznik)
 {
-  return napisLewy + lacznik + napisPrawy;
+  std::string tmp{ std::string(napisLewy) + std::string(lacznik) + std::string(napisPrawy)};
+  tmp.copy(out, tmp.size());
+  out[tmp.size()] = '\0';
+  return 1;
 }
 
+#ifdef __cplusplus
 }
+#endif

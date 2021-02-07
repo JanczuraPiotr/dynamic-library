@@ -1,21 +1,16 @@
 cmake_minimum_required(VERSION 3.17)
 
-project(lib)
+set("PROJECT_NAME" app)
 
+project(${PROJECT_NAME})
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wpedantic -Wextra -Werror -Wconversion -pedantic-errors -Weffc++ -MMD -MP -MF")
 set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -luser32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread	-Wl,--no-whole-archive	-s ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib.dll") # <<<---
 
-add_compile_definitions(BUILD_DLL)
+include_directories (${LIB_SOURCE_DIR})
 
-add_library(lib SHARED lib.cpp lib.h)
-
-set_target_properties(lib PROPERTIES
-        PREFIX ""
-        )
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+add_executable (${PROJECT_NAME} main.cpp
         ${LIB_SOURCE_DIR}/lib.h
-        ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib.h
         )
-
